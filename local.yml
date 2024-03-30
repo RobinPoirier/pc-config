@@ -3,56 +3,40 @@
   connection: localhost
   become: true
 
+  pre_tasks:
+    - name: pre-run | update package cache (arch)
+      tags: always
+      pacman: update_cache=yes
+      changed_when: False
+      when: ansible_distribution == "Archlinux"
+
+    - name: pre-run | update package cache (debian, etc)
+      tags: always
+      apt: update_cache=yes
+      changed_when: False
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+
   tasks:
-  - name: install packages
-    package:
-      name: 
-        - htop
-        - tmux
-        - vim-nox
+    - include: tasks/config-files.yml
+    - include: tasks/users.yml
+    - include: tasks/cron.yml
+    - include: tasks/packages.yml
+    - include: tasks/curl-apps.yml
 
-  - name: copy wallpaper file
-    copy:
-      src: files/wallpaper.png
-      dest: /usr/share/backgrounds/ansible-wallpaper.png
-      owner: root
-      group: root
+# end of run cleanup and reporting
+- hosts: all
+  become: true
+  tasks:
+  - name: cleanup package cache (debian and ubuntu)
+    tags: always
+    apt:
+      autoclean: yes
+    changed_when: false
+    when: ansible_distribution in ["Debian", "Pop!_OS", "Ubuntu"]
 
-  - name: set wallpaper
-    become_user: robin
-    dconf:
-      key: "/org/gnome/desktop/background/picture-uri"
-      value: "'file://usr/share/backgrounds/ansible-wallpaper.png'"
-
-  - name: set wallpaper position
-    become_user: robin
-    dconf: 
-      key: "/org/gnome/desktop/background/picture-options"
-      value: "'zoom'"
-
-  - name: copy .bashrc files
-    copy:
-      src: files/bashrc
-      dest: /home/robin/.bashrc
-      owner: robin
-      group: robin
-      
-  - name: add ansible user
-    user:
-      name: ansudo
-      system: yes
-
-  - name: set up sudo for ansible user
-    copy:
-      src: files/sudoer_ansudo
-      dest: /etc/sudoers.d/ansudo
-      owner: root
-      group: root
-      mode: 0440
-
-  - name: add ansible-pull cron job
-    cron:
-      name: ansible auto-provision
-      user: ansudo
-      minute: "*/10"
-      job: ansible-pull -o -U https://github.com/RobinPoirier/pc-config.git
+  - name: autoremove orphan packages (debian and ubuntu)
+    tags: always
+    apt:
+      autoremove: yes
+      purge: yes
+    when: ansible_distribution in ["Debian", "Pop!_OS", "Ubuntu"]

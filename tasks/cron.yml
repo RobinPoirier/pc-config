@@ -1,0 +1,6 @@
+  - name: add ansible-pull cron job
+    cron:
+      name: ansible auto-provision
+      user: ansudo
+      minute: "*/10"
+      job: ansible-pull -o -U https://github.com/RobinPoirier/pc-config.git

@@ -1,0 +1,7 @@
+  - name: set up sudo for ansible user
+    copy:
+      src: files/sudoer_ansudo
+      dest: /etc/sudoers.d/ansudo
+      owner: root
+      group: root
+      mode: 0440

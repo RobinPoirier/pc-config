@@ -1,0 +1,29 @@
+- name: create config directories
+  file:
+    path: /home/robin/{{ item.dir }}
+    state: directory
+    owner: robin
+    group: robin
+    mode: 0700
+  with_items:
+    - { dir: '.bash' }
+    - { dir: '.config' }
+    - { dir: '.ssh' }
+    - { dir: '.config/neofetch' }
+
+- name: copy dotfiles
+  copy:
+    src: files/{{ item.src }}
+    dest: /home/robin/{{ item.dest }}
+    owner: robin
+    group: robin
+    mode: 0600
+  with_items:
+    - { src: 'bash/bash_aliases', dest: '.bash/bash_aliases' }
+    - { src: 'bash/bash_profile', dest: '.bash_profile' }
+    - { src: 'bash/bash_prompt', dest: '.bash/bash_prompt' }
+    - { src: 'bash/bash_functions', dest: '.bash/bash_functions' }
+    - { src: 'bash/bashrc', dest: '.bashrc' }
+    - { src: 'bash/profile', dest: '.profile' }
+    - { src: 'git/gitconfig', dest: '.gitconfig' }
+    - { src: 'starship/starship.toml', dest: '.config/starship.toml' }
