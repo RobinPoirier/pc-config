@@ -17,11 +17,21 @@
       when: ansible_distribution in ["Debian", "Ubuntu"]
 
   tasks:
-    - include: tasks/config-files.yml
-    - include: tasks/users.yml
-    - include: tasks/cron.yml
-    - include: tasks/packages.yml
-    - include: tasks/curl-apps.yml
+    - name: config files
+      include_tasks: 
+        files: tasks/config-files.yml
+    - name: users
+      include_tasks: 
+        files: tasks/users.yml
+    - name: cron
+      include_tasks: 
+        files: tasks/cron.yml
+    - name: install packages
+      include_tasks: 
+        files: tasks/packages.yml
+    - name: install curl apps
+      include_tasks: 
+        files: tasks/curlapps.yml
 
 # end of run cleanup and reporting
 - hosts: all
