@@ -17,11 +17,11 @@
       when: ansible_distribution in ["Debian", "Ubuntu"]
 
   tasks:
-  - include_tasks: tasks/config-files.yml
   - include_tasks: tasks/users.yml
   - include_tasks: tasks/cron.yml
   - include_tasks: tasks/packages.yml
   - include_tasks: tasks/curlapps.yml
+  - include_tasks: tasks/config-files.yml
 
 # end of run cleanup and reporting
 - hosts: all
