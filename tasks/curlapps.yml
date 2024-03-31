@@ -1,0 +1,14 @@
+- name: create temp directory
+  ansible.builtin.file:
+    path: /home/robin/.tmp
+    state: directory
+    mode: 0755
+
+- name: Download starship
+  ansible.builtin.get_url:
+    url: http://starship.rs/install.sh
+    dest: /home/robin/.tmp/install.sh
+
+- name: install starship
+  ansible.builtin.shell:
+    cmd: cat /home/robin/.tmp/install.sh | sh -s -- --bin-dir /data/data/com.termux/files/usr/bin
