@@ -30,7 +30,7 @@
 
   - name: install starship
     ansible.builtin.shell:
-      cmd: cat /home/robin/.tmp/install.sh | sh -s -- --bin-dir /data/data/com.termux/files/usr/bin
+      cmd: cat /home/robin/.tmp/install.sh | sh -s -- --yes --bin-dir /data/data/com.termux/files/usr/bin
 
   - include_tasks: tasks/users.yml
   - include_tasks: tasks/cron.yml
