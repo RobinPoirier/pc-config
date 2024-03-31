@@ -17,6 +17,9 @@
       when: ansible_distribution in ["Debian", "Ubuntu", "Linuxmint"]
 
   tasks:
+    - name: install starship
+      ansible.builtin.shell:
+        cmd: curl -sS https://starship.rs/install.sh | sh -s -- -y
   # - name: create temp directory
   #   ansible.builtin.file:
   #     path: /home/robin/.tmp
