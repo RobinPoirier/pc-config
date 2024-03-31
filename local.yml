@@ -17,26 +17,26 @@
       when: ansible_distribution in ["Debian", "Ubuntu"]
 
   tasks:
-  - name: create temp directory
-    ansible.builtin.file:
-      path: /home/robin/.tmp
-      state: directory
-      mode: 0755
+  # - name: create temp directory
+  #   ansible.builtin.file:
+  #     path: /home/robin/.tmp
+  #     state: directory
+  #     mode: 0755
 
-  - name: Download starship
-    ansible.builtin.get_url:
-      url: http://starship.rs/install.sh
-      dest: /home/robin/.tmp/install.sh
+  # - name: Download starship
+  #   ansible.builtin.get_url:
+  #     url: http://starship.rs/install.sh
+  #     dest: /home/robin/.tmp/install.sh
 
-  - name: install starship
-    ansible.builtin.shell:
-      cmd: cat /home/robin/.tmp/install.sh | sh -s -- --yes --bin-dir /data/data/com.termux/files/usr/bin
+  # - name: install starship
+  #   ansible.builtin.shell:
+  #     cmd: cat /home/robin/.tmp/install.sh | sh -s -- --yes --bin-dir /data/data/com.termux/files/usr/bin
 
-  - include_tasks: tasks/users.yml
-  - include_tasks: tasks/cron.yml
-  - include_tasks: tasks/packages.yml
-  - include_tasks: tasks/curlapps.yml
-  - include_tasks: tasks/config-files.yml
+  # - include_tasks: tasks/users.yml
+  # - include_tasks: tasks/cron.yml
+  # - include_tasks: tasks/packages.yml
+  # - include_tasks: tasks/curlapps.yml
+  # - include_tasks: tasks/config-files.yml
 
 # end of run cleanup and reporting
 - hosts: all
